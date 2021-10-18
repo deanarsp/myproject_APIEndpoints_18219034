@@ -3,11 +3,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-
 with open("menu.json", "r") as read_file:
 	menu_data = json.load(read_file)
+app = FastAPI()
 
 @app.get("/")
 def root():
@@ -38,7 +36,7 @@ async def write_menu(name:str):
 		json.dump(menu_data,write_file,indent=4)
 	write_file.close()
 
-	return (new_menu_data)
+	return (new_data)
 	raise HTTPException(
 		status_code=500, detail=f"Internal Server Error"
 		)

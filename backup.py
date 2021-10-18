@@ -6,8 +6,8 @@ from fastapi.encoders import jsonable_encoder
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-with open("data.json", "r") as read_file:
-	data = json.load(read_file)
+with open("menu_data.json", "r") as read_file:
+	menu_data = json.load(read_file)
 
 class UserInDB(User):
     hashed_password: str
@@ -40,11 +40,11 @@ def root():
 
 @app.get("/menu")
 async def read_all_menu():
-	return data
+	return menu_data
 
 @app.get("/menu/{item_id}")
 async def read_menu(item_id: int):
-	for menu_item in data["menu"]:
+	for menu_item in menu_data["menu"]:
 		if menu_item["id"] == item_id:
 			return menu_item
 	raise HTTPException(
@@ -54,13 +54,13 @@ async def read_menu(item_id: int):
 @app.post("/menu")
 async def write_menu(name:str):
 	id=1
-	if (len(data["menu"])>0):
-		id = data["menu"][len(data["menu"])-1]["id"]+1
+	if (len(menu_data["menu"])>0):
+		id = menu_data["menu"][len(menu_data["menu"])-1]["id"]+1
 	new_data = {"id":id, "name":name}
-	data['menu'].append(dict(new_data))
+	menu_data['menu'].append(dict(new_data))
 	read_file.close()
 	with open("menu.json", "w") as write_file:
-		json.dump(data,write_file,indent=4)
+		json.dump(menu_data,write_file,indent=4)
 	write_file.close()
 
 	return (new_data)
@@ -70,12 +70,12 @@ async def write_menu(name:str):
 
 @app.put("/menu/{item_id}")
 async def update_menu(item_id: int, name:str):
-	for menu_item in data["menu"]:
+	for menu_item in menu_data["menu"]:
 		if menu_item["id"] == item_id:
 			menu_item["name"] = name
 			read_file.close()
 			with open("menu.json", "w") as write_file:
-				json.dump(data,write_file,indent=4)
+				json.dump(menu_data,write_file,indent=4)
 			write_file.close()
 
 			return{"message":"Data updated successfully"}
@@ -86,12 +86,12 @@ async def update_menu(item_id: int, name:str):
 
 @app.delete("/menu/{item_id}")
 async def delete_menu(item_id: int):
-	for menu_item in data["menu"]:
+	for menu_item in menu_data["menu"]:
 		if menu_item["id"] == item_id:
-			data["menu"].remove(menu_item)
+			menu_data["menu"].remove(menu_item)
 			read_file.close()
 			with open("menu.json", "w") as write_file:
-				json.dump(data,write_file,indent=4)
+				json.dump(menu_data,write_file,indent=4)
 			write_file.close()
 
 			return{"message":"Data deleted successfully"}
