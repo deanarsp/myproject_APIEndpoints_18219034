@@ -4,11 +4,10 @@ from fastapi import FastAPI, HTTPException, Body, Depends
 
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
+from app.auth.auth_hashing import get_password_hash, check_user
 
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-
-from passlib.context import CryptContext
 
 with open("menu.json", "r") as read_file:
 	menu_data = json.load(read_file)
@@ -94,21 +93,6 @@ async def delete_menu(item_id: int):
 		)
 
 # user
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-def check_user(username: str, password: str):
-    for user in user_data:
-        if user["username"] == username and verify_password(password, user['password']):
-            return True
-    return False
-
 # signup
 
 @app.post("/user/signup", tags=["user"])
