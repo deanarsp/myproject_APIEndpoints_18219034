@@ -103,6 +103,14 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+def check_user(username: str, password: str):
+    for user in user_data:
+        if user["username"] == username and verify_password(password, user['password']):
+            return True
+    return False
+
+# signup
+
 @app.post("/user/signup", tags=["user"])
 async def create_user(username: str, password: str):
 	for user in user_data:
@@ -110,20 +118,14 @@ async def create_user(username: str, password: str):
 			raise HTTPException (status_code=301, detail=f"user already exist")
 	hashed = get_password_hash(password)
 	new_data = {"username":username, "password":hashed}
-	user_data.append(dict(new_data)) # replace with db call, making sure to hash the password first
+	user_data.append(dict(new_data))
 	read_file.close()
 	with open("users.json", "w") as write_file:
 		json.dump(user_data,write_file,indent=4)
 	write_file.close()
 	return signJWT(username)
 
-#user udah ada ato belom, klo uda kasi error
-
-def check_user(username: str, password: str):
-    for user in user_data:
-        if user["username"] == username and verify_password(password, user['password']):
-            return True
-    return False
+# login
 
 @app.post("/user/login", tags=["user"])
 async def user_login(username: str, password: str):
@@ -133,8 +135,8 @@ async def user_login(username: str, password: str):
         "error": "Wrong login details!"
     }
 
+# read all user
+
 @app.get("/user", dependencies=[Depends(JWTBearer())], tags=["user"])
 async def read_all_user() -> dict:
 	return user_data
-
-#nanti bandingin pass input ama hasil hash di db
