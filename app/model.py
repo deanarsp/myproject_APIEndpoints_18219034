@@ -21,9 +21,8 @@ class UserSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "fullname": "Abdulazeez Abdulazeez Adeshina",
-                "email": "abdulazeez@x.com",
-                "password": "weakpassword"
+                "username": "asdf",
+                "password": "asdf" #harusnya hash yg disimpen
             }
         }
 
