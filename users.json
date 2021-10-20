@@ -1,16 +1,6 @@
-{
-    "user": [
-        {
-            "id": 1,
-            "fullname": "Abdulazeez Abdulazeez Adeshina",
-            "email": "abdulazeez@x.com",
-            "password": "weakpassword"
-        },
-        {
-            "id": 2,
-            "fullname": "John Doe",
-            "email": "johndoe@x.com",
-            "password": "pathethicpassword"
-        }
-    ]
-}
+[
+    {
+        "username": "asdf",
+        "password": "$2b$12$KgYpoilItWLmUvx/J7AEK.rsqmCGtejYQHFAmSQdbAh385iHIEeq."
+    }
+]
