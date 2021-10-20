@@ -2,7 +2,6 @@ import json
 
 from fastapi import FastAPI, HTTPException, Body, Depends
 
-from app.model import MenuSchema, UserSchema, UserLoginSchema
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
 
