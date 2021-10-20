@@ -1,8 +1,9 @@
-import json
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+import uvicorn
 
+<<<<<<< HEAD
+if __name__ == "__main__":
+    uvicorn.run("app.api:app", host="0.0.0.0", port=8081, reload=True)
+=======
 with open("menu.json", "r") as read_file:
 	menu_data = json.load(read_file)
 app = FastAPI()
@@ -72,3 +73,4 @@ async def delete_menu(item_id: int):
 	raise HTTPException(
 		status_code=404, detail=f"Item not found"
 		)
+>>>>>>> master
